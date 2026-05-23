@@ -138,6 +138,7 @@ const Navbar = () => {
 };
 
 export default function App() {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE || '/api';
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState<RecommendationResponse | null>(null);
     const [error, setError] = useState<string | null>(null);
@@ -180,8 +181,8 @@ export default function App() {
         async function loadOptions() {
             try {
                 const [locationsRes, cuisinesRes] = await Promise.all([
-                    fetch('/api/locations?city=Bangalore'),
-                    fetch('/api/cuisines'),
+                    fetch(`${API_BASE_URL}/locations?city=Bangalore`),
+                    fetch(`${API_BASE_URL}/cuisines`),
                 ]);
 
                 if (locationsRes.ok) {
@@ -246,7 +247,7 @@ export default function App() {
         setError(null);
 
         try {
-            const response = await fetch('/api/recommendations', {
+            const response = await fetch(`${API_BASE_URL}/recommendations`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
