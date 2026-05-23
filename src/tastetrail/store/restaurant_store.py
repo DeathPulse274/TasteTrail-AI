@@ -48,7 +48,10 @@ class RestaurantStore:
         needle = city.strip().lower()
         if not needle:
             return []
-        return [r for r in self._restaurants if r.location.lower() == needle]
+        exact_matches = [r for r in self._restaurants if r.location.lower() == needle]
+        if exact_matches:
+            return exact_matches
+        return [r for r in self._restaurants if needle in r.location.lower()]
 
     def distinct_locations(self) -> list[str]:
         cities = sorted({r.location for r in self._restaurants})

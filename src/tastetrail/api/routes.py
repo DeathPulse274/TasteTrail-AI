@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
 from tastetrail.api.dependencies import get_recommender, get_store
 from tastetrail.models import RecommendationResult, UserPreferences
@@ -21,9 +21,19 @@ def health(store: RestaurantStore = Depends(get_store)) -> dict:
     }
 
 
+from fastapi import Query
+
+
 @router.get("/locations")
-def list_locations(store: RestaurantStore = Depends(get_store)) -> dict:
-    return {"locations": store.distinct_locations()}
+def list_locations(
+    city: str | None = Query(None, description="Optional city filter for locations"),
+    store: RestaurantStore = Depends(get_store),
+) -> dict:
+    locations = store.distinct_locations()
+    if city:
+        needle = city.strip().lower()
+        locations = [location for location in locations if needle in location.lower()]
+    return {"locations": locations}
 
 
 @router.get("/cuisines")
