@@ -48,20 +48,110 @@ def _inject_styles() -> None:
         """
         <style>
             body {
-                background: linear-gradient(180deg, #02040a 0%, #06101d 100%);
+                background: #02040a;
             }
             .stApp {
                 color: #e2e8f0;
+                overflow-x: hidden;
+                padding-top: 6rem;
+            }
+            .top-navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 999;
+                height: 76px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 2rem;
+                background: rgba(2, 4, 10, 0.75);
+                backdrop-filter: blur(24px);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            }
+            .top-navbar .brand {
+                display: flex;
+                align-items: center;
+                gap: 0.9rem;
+            }
+            .top-navbar .brand-icon {
+                width: 3rem;
+                height: 3rem;
+                border-radius: 1rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+                color: #020617;
+                font-size: 1rem;
+                font-weight: 800;
+            }
+            .top-navbar .brand-text {
+                font-size: 1rem;
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                color: #f8fafc;
+            }
+            .top-navbar .brand-text span {
+                color: #94a3b8;
+                font-weight: 400;
+                margin-left: 0.25rem;
+            }
+            .food-bg,
+            .glow-bg {
+                pointer-events: none;
+            }
+            .food-bg {
+                position: fixed;
+                inset: 0;
+                z-index: -2;
+                background-image: linear-gradient(to bottom, rgba(2, 4, 10, 0.7), rgba(2, 4, 10, 0.95)),
+                    url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?q=80&w=2070&auto=format&fit=crop');
+                background-size: cover;
+                background-position: center;
+                filter: blur(40px) brightness(0.6);
+            }
+            .glow-bg {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                background: radial-gradient(circle at 50% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+                animation: pulse-glow 15s ease-in-out infinite;
+            }
+            @keyframes pulse-glow {
+                0%, 100% { opacity: 0.3; filter: blur(60px); }
+                50% { opacity: 0.5; filter: blur(100px); }
             }
             .hero-card,
             .filter-card,
             .results-card,
             .recommendation-card {
-                background: rgba(15, 23, 42, 0.82);
+                background: rgba(15, 23, 42, 0.85);
                 border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 32px;
                 box-shadow: 0 36px 80px rgba(0, 0, 0, 0.25);
                 backdrop-filter: blur(20px);
+            }
+            .glass-card {
+                background: rgba(10, 12, 20, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                backdrop-filter: blur(32px);
+            }
+            .cinematic-glow {
+                position: relative;
+            }
+            .cinematic-glow::before {
+                content: '';
+                position: absolute;
+                inset: -0.25rem;
+                background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(129, 140, 248, 0.08));
+                filter: blur(32px);
+                z-index: -1;
             }
             .hero-card {
                 padding: 2rem 2.5rem;
@@ -73,13 +163,46 @@ def _inject_styles() -> None:
                 margin: 0;
                 line-height: 1.1;
             }
+            .hero-title-light {
+                color: #94a3b8;
+                font-weight: 400;
+            }
             .hero-subtitle {
                 color: #cbd5e1;
                 font-size: 1.05rem;
                 margin-top: 1rem;
                 max-width: 64rem;
             }
-            .stSelectbox, .stSlider, .stNumberInput, .stTextArea {
+            .hero-pill {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+                border-radius: 999px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.04);
+                color: #94a3b8;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                font-weight: 700;
+                margin-bottom: 1.25rem;
+            }
+            .premium-gradient-text {
+                background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(135deg, #ffffff 0%, #e2e8f0 50%, #cbd5e1 100%);
+            }
+            .accent-gradient {
+                background-image: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            }
+            .glass {
+                background-color: rgba(10, 12, 20, 0.8);
+                backdrop-filter: blur(36px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
+            }
+            .stSelectbox, .stSlider, .stNumberInput, .stTextArea, .stRadio, .stMultiselect {
                 border-radius: 18px;
             }
             .stButton>button {
@@ -115,6 +238,14 @@ def _inject_styles() -> None:
                 padding: 1.5rem;
                 transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
                 position: relative;
+                overflow: hidden;
+            }
+            .recommendation-card::before {
+                content:'';
+                position:absolute;
+                inset:0 0 auto 0;
+                height:2px;
+                background: linear-gradient(90deg, rgba(34,211,238,0.8), rgba(129,140,248,0.8));
             }
             .recommendation-card:hover {
                 transform: translateY(-6px);
@@ -239,6 +370,11 @@ def _inject_styles() -> None:
                 width: 100%;
                 padding: 1rem 1.5rem;
             }
+            .results-summary {
+                padding: 2rem;
+                border: 1px solid rgba(255,255,255,0.08);
+                margin-bottom: 1.5rem;
+            }
             @media(max-width: 950px) {
                 .filter-grid {
                     grid-template-columns: 1fr;
@@ -262,10 +398,19 @@ def _render_header() -> None:
     _inject_styles()
     st.markdown(
         """
-        <div class="hero-card">
-            <div class="section-title">AI dining concierge</div>
-            <h1 class="hero-title">TasteTrail AI</h1>
-            <p class="hero-subtitle">A smarter restaurant recommendation experience with natural preference inputs, budget awareness, and explanation-backed picks.</p>
+        <div class="food-bg"></div>
+        <div class="glow-bg"></div>
+        <div class="top-navbar">
+            <div class="brand">
+                <div class="brand-icon">TT</div>
+                <div class="brand-text">TasteTrail <span>AI</span></div>
+            </div>
+            <div class="brand-text">Restaurant discovery, reimagined</div>
+        </div>
+        <div class="hero-card cinematic-glow">
+            <div class="hero-pill">Discover the future of dining</div>
+            <h1 class="hero-title premium-gradient-text">TasteTrail <span class="hero-title-light">AI</span></h1>
+            <p class="hero-subtitle">Personalized restaurant discovery powered by AI and real-world dining preferences.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -280,9 +425,12 @@ def _render_results(result) -> None:
         )
 
     if result.summary:
-        st.markdown('<div class="results-card">', unsafe_allow_html=True)
-        st.subheader("Overview")
-        st.markdown(result.summary)
+        st.markdown('<div class="results-card results-summary">', unsafe_allow_html=True)
+        st.markdown('<div class="section-title">AI Recommendation Insight</div>', unsafe_allow_html=True)
+        st.markdown(
+            f"<p style='margin:0; font-size:1rem; line-height:1.75; color:#cbd5e1;'>{result.summary}</p>",
+            unsafe_allow_html=True,
+        )
         st.markdown('</div>', unsafe_allow_html=True)
 
     if not result.recommendations:
@@ -293,7 +441,6 @@ def _render_results(result) -> None:
         return
 
     st.subheader(f"Top {len(result.recommendations)} recommendations")
-    st.markdown('<div class="results-card">', unsafe_allow_html=True)
     st.markdown('<div class="card-grid">', unsafe_allow_html=True)
     for rec in result.recommendations:
         restaurant = rec.restaurant
@@ -309,7 +456,7 @@ def _render_results(result) -> None:
                         <div style='font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:#7dd3fc; margin-bottom:0.35rem;'>Rank #{rec.rank}</div>
                         <div style='font-size:1.35rem; font-weight:800; color:#f8fafc; line-height:1.1;'>{restaurant.name}</div>
                     </div>
-                    <div style='font-size:0.95rem; color:#94a3b8;'>{rating_display} ★</div>
+                    <div style='font-size:0.95rem; color:#94a3b8; text-align:right;'>{rating_display} ★</div>
                 </div>
                 <div class='tag-row'>
                     <span class='tag'>{restaurant.budget_band.value.title()}</span>
@@ -332,7 +479,6 @@ def _render_results(result) -> None:
             """,
             unsafe_allow_html=True,
         )
-    st.markdown('</div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     if result.metadata.latency_ms is not None:
@@ -358,7 +504,7 @@ def main() -> None:
     ]
     cuisines = ["All cuisines", *store.distinct_cuisines()[:150]]
 
-    st.markdown('<div class="filter-card">', unsafe_allow_html=True)
+    st.markdown('<div class="filter-card glass-card cinematic-glow">', unsafe_allow_html=True)
     with st.form("preferences_form", clear_on_submit=False):
         st.markdown("""
             <div class="section-title">Your preferences</div>
@@ -370,20 +516,20 @@ def main() -> None:
         left, right = st.columns([1.2, 1])
         with left:
             location = st.selectbox(
-                "Area *",
+                "Area",
                 options=locations,
                 index=0 if locations else None,
                 format_func=lambda x: x.split(",")[0].strip() if x else x,
             )
-            cuisine_choice = st.selectbox("Cuisine", options=cuisines)
+            cuisine_choice = st.selectbox("Preferred cuisines", options=cuisines)
             additional = st.text_area(
                 "Additional preferences",
-                placeholder="e.g. family-friendly, quick service, outdoor seating",
+                placeholder="Describe your perfect dining experience...",
                 height=110,
             )
         with right:
             budget_label = st.radio(
-                "Budget",
+                "Budget range",
                 options=list(BUDGET_OPTIONS.keys()),
                 index=1,
                 format_func=lambda k: BUDGET_OPTIONS[k],
@@ -393,16 +539,15 @@ def main() -> None:
                 "Minimum rating",
                 min_value=1.0,
                 max_value=5.0,
-                value=3.0,
-                step=0.5,
+                value=4.0,
+                step=0.1,
             )
             top_n = st.number_input("Number of results", min_value=1, max_value=10, value=5)
 
-        submitted = st.form_submit_button("Get recommendations", type="primary", use_container_width=True)
+        submitted = st.form_submit_button("Get AI Recommendations", type="primary", use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     if not submitted:
-        st.info("Use the form above to generate restaurant recommendations.")
         return
 
     if not location:
