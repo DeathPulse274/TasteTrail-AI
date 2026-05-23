@@ -16,7 +16,6 @@ build/
 # Data artifacts
 data/raw/*
 !data/raw/.gitkeep
-data/processed/*
 !data/processed/.gitkeep
 
 # IDE & OS
