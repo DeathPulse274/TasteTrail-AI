@@ -73,8 +73,24 @@ python -m tastetrail.cli --location Bangalore --budget medium --top-n 3
 
 ## Web UI (Phase 3)
 
+Streamlit (existing MVP):
+
 ```bash
 streamlit run app/main.py
+```
+
+React frontend (new UI):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open the app at `http://localhost:3000` after starting the Python backend with:
+
+```bash
+python -m uvicorn tastetrail.api.main:app --reload
 ```
 
 Use the form to set city, budget, cuisine, and rating — results show name, cuisine, rating, cost, and AI explanation.
@@ -94,6 +110,7 @@ uvicorn tastetrail.api.main:app --reload
 ```
 src/tastetrail/     Core package (models, config; pipeline in later phases)
 app/                Streamlit UI (Phase 3)
+frontend/           React UI adapted from Google AI Studio design
 scripts/            Data ingestion CLI (Phase 1)
 data/processed/     Generated restaurant parquet (not committed)
 tests/              Pytest suite

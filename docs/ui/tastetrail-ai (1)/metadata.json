@@ -1,0 +1,8 @@
+{
+  "name": "TasteTrail AI",
+  "description": "A premium AI-powered restaurant discovery app with cinematic aesthetics and personalized recommendations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

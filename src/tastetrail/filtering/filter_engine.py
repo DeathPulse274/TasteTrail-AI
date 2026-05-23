@@ -44,7 +44,10 @@ class FilterEngine:
 
     def _filter_location(self, restaurants: list[Restaurant], city: str) -> list[Restaurant]:
         needle = city.strip().lower()
-        return [r for r in restaurants if r.location.lower() == needle]
+        exact_matches = [r for r in restaurants if r.location.lower() == needle]
+        if exact_matches:
+            return exact_matches
+        return [r for r in restaurants if needle in r.location.lower()]
 
     def _filter_budget(self, restaurants: list[Restaurant], budget: BudgetBand) -> list[Restaurant]:
         return [r for r in restaurants if r.budget_band == budget]
